@@ -54,6 +54,16 @@ class fotostrana
         return $this->cache['walls'][$user_id];
     }
 
+    function getAppBalance()
+    {
+        $r = new fotostranaRequest();
+        $r->setMethod('Billing.getAppBalance');
+        $apiresult = $r->get();
+        if (isset($apiresult['response']['balance'])) {
+            return $apiresult['response']['balance'];
+        }
+    }
+
     function searchUsersAsArray($params=array())
     {
 
@@ -623,7 +633,7 @@ class fotostranaRequest
         if ($cached_result = $this->cache->loadCache($p)) {
             $this->result_raw = $cached_result;
             if (FOTOSTRANA_REQUEST_LOG) {
-                file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' cache: '.$this->method.' '.serialize($this->params)."\n", FILE_APPEND);
+                file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' cache: '.$this->method.' '.serialize($this->params).' '.serialize($cached_result)."\n\n", FILE_APPEND);
             }
             return;
         }
@@ -653,7 +663,7 @@ class fotostranaRequest
         }
 
         if (FOTOSTRANA_REQUEST_LOG) {
-            file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' request: '.$this->method.' '.serialize($this->params)."\n", FILE_APPEND);
+            file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' request: '.$this->method.' '.serialize($this->params).' '.$this->result_raw."\n\n", FILE_APPEND);
         }
 
         $this->cache->storeCache($p, $this->result_raw);

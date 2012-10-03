@@ -217,6 +217,16 @@ foreach ($friends_pets as $_pet) {
                 <a href="logout-example.php">Выход</a>
             </p-->
 
+            <p>
+                Баланс пользователя:
+                <?=$user->balance?>
+                ФМ
+                <br/>
+                Баланс приложения:
+                <?=$fotostrana->getAppBalance()?>
+                ФМ
+            </p>
+
         </div>
 
     </body>
