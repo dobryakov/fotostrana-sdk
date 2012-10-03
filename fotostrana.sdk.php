@@ -17,6 +17,11 @@ class fotostrana
             define('FOTOSTRANA_DEBUG', 0);
         }
 
+        if (!defined('FOTOSTRANA_REQUEST_LOG')) {
+            define('FOTOSTRANA_REQUEST_LOG', dirname(__FILE__).'/requests.log');
+            //file_put_contents(FOTOSTRANA_REQUEST_LOG, '');
+        }
+
         if (!defined('FOTOSTRANA_API_BASEURL')) {
             define('FOTOSTRANA_API_BASEURL','http://fotostrana.ru/apifs.php');
         }
@@ -617,6 +622,9 @@ class fotostranaRequest
 
         if ($cached_result = $this->cache->loadCache($p)) {
             $this->result_raw = $cached_result;
+            if (FOTOSTRANA_REQUEST_LOG) {
+                file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' cache: '.$this->method.' '.serialize($this->params)."\n", FILE_APPEND);
+            }
             return;
         }
 
@@ -642,6 +650,10 @@ class fotostranaRequest
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $this->result_raw = curl_exec($ch);
             curl_close($ch);
+        }
+
+        if (FOTOSTRANA_REQUEST_LOG) {
+            file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' request: '.$this->method.' '.serialize($this->params)."\n", FILE_APPEND);
         }
 
         $this->cache->storeCache($p, $this->result_raw);
@@ -804,7 +816,7 @@ class fotostranaRequestsCounter
 class fotostranaRequestsCache
 {
 
-    const LIFETIME = 5;
+    const LIFETIME = 30;
     private $cache_dir;
 
     function __construct()
