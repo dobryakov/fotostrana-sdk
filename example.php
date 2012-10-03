@@ -65,6 +65,7 @@ foreach ($friends_pets as $_pet) {
 <html>
     <head>
         <title>Fotostrana SDK Example</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" media="all" href="http://a5.s.fsimg.ru/base/css/__v16062011_1343818039.common.css"/>
         <style type="text/css">
             body
@@ -88,6 +89,71 @@ foreach ($friends_pets as $_pet) {
             }
         </style>
     </head>
+
+    <script type="text/javascript">
+
+        window.projectDomain = 'apitest.vs58.net';
+
+        function getURLParameter(name) { return decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]); };
+
+        /*function LoadScript(src){
+            var el=document.createElement('script');
+            el.setAttribute('src',src);
+            el.setAttribute('type','text/javascript');
+            document.getElementsByTagName('head')[0].appendChild(el);
+            return el;
+        };*/
+
+        var APP_ID = "<?=FOTOSTRANA_APPID?>";
+        var APP_CLIENT_KEY = "<?=FOTOSTRANA_CLIENTKEY?>";
+        var errorCallBack = function() { console.log("API Error!"); };
+        var fsapi_url = getURLParameter('fsapi');
+
+        /*if (LoadScript(fsapi_url)) {
+            var client = new fsapi(APP_ID, APP_CLIENT_KEY);
+            client.init(errorCallBack);
+        }*/
+
+        /*$.ajaxSetup({
+            cache: true
+        });
+
+        function callSpendMoney() { alert('x'); };
+
+        function callApiEvent(name, callback, params) {
+
+            $.getScript(fsapi_url, function(){
+
+                var client = new fsapi(APP_ID, APP_CLIENT_KEY);
+                client.init(errorCallBack);
+                client.event(name, alert('x'), params);
+
+            });
+        };*/
+
+        function callSpendMoney(d)
+        {
+            //console.log('-------------------------------------------------');
+            //console.log(d);
+            $.ajax({
+                url: 'withdrawmoney.php?amount=' + d.money
+            });
+        }
+
+        $.ajaxSetup({
+            cache: true
+        });
+
+        function callApiEvent(name, callback, params) {
+            $.getScript(fsapi_url, function(){
+                var client = new fsapi(APP_ID, APP_CLIENT_KEY);
+                client.init(errorCallBack);
+                client.event(name, callback, params);
+            });
+        }
+
+    </script>
+
     <body>
 
         <div id="content">
@@ -188,6 +254,15 @@ foreach ($friends_pets as $_pet) {
                     <?
                 }
                 ?>
+            </div>
+
+            <div class="fs-content-box profile-header fs-ie nclear">
+                <p>
+                    Попросить денег:
+                </p>
+                <p>
+                    <input type="button" name="" value=" Дай денег! " onclick='callApiEvent("buyItem", callSpendMoney, {name: "test", amount: 1});'>
+                </p>
             </div>
 
             <!--div class="fs-content-box profile-header fs-ie nclear">

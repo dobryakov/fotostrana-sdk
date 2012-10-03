@@ -450,7 +450,7 @@ class fotostranaWall extends fotostranaObject
         $this->user_id=$user_id;
     }
 
-    function get()
+    function get($limit = 3)
     {
         $r = $this->request();
         $r->setMethod('WallUser.getListsCached');
@@ -458,7 +458,7 @@ class fotostranaWall extends fotostranaObject
         $apiresult = $r->get();
         if (array_key_exists('response',$apiresult)) {
             if (array_key_exists(FOTOSTRANA_VIEWER_ID,$apiresult['response'])) {
-                return $apiresult['response'][FOTOSTRANA_VIEWER_ID];
+                return array_slice($apiresult['response'][FOTOSTRANA_VIEWER_ID], 0, $limit);
             }
         }
     }
