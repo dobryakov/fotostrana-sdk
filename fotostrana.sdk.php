@@ -328,6 +328,49 @@ class fotostranaUser extends fotostranaObject
         return $apiresult;
     }
 
+    function getMarketDiscount()
+    {
+        $r = $this->request();
+        $r->setMethod('User.getMarketDiscount');
+        $r->setParam('userId',$this->user_id);
+        $apiresult = $r->get();
+        if (isset($apiresult['response'])) {
+            $this->data['market_discount'] = $apiresult['response'];
+            return $this->data['market_discount'];
+        }
+    }
+
+    function getOfferUrl()
+    {
+        $r = $this->request();
+        $r->setMethod('User.getOfferUrl');
+        $r->setParam('userId',$this->user_id);
+        $apiresult = $r->get();
+        if (isset($apiresult['response'])) {
+            $this->data['offer_url'] = $apiresult['response'];
+            return $this->data['offer_url'];
+        }
+    }
+
+    function getFriendsPets()
+    {
+        if (!$this->data['friends_pets']) {
+            $this->data['friends_pets'] = array();
+            $r = $this->request();
+            $r->setMethod('Pet.getFriendsPets');
+            $r->setParam('userId',$this->user_id);
+            $r->setParam('fields', 'name,birthday,class,image200,image,user_name,user_photo_small,user_photo_97,user_photo_192,user_photo_big');
+            $apiresult = $r->get();
+            if (isset($apiresult['response']) && is_array($apiresult['response'])) {
+                foreach ($apiresult['response'] as $_pet) {
+                    $pet = new fotostranaPet($_pet['user_id']);
+                    $this->data['friends_pets'][] = $pet;
+                }
+            }
+        }
+        return $this->data['friends_pets'];
+    }
+
     function wall()
     {
         if (!$this->getFromOCache('wall')) {
@@ -412,6 +455,7 @@ class fotostranaWall extends fotostranaObject
 class fotostranaPet extends fotostranaObject
 {
 
+    private $user;
     private $user_id;
     private $types = array(
         16 => 'собака',

@@ -38,12 +38,24 @@ if (!FOTOSTRANA_SESSIONKEY || !FOTOSTRANA_VIEWER_ID)
     die();
 }
 
-//define('FOTOSTRANA_SESSIONKEY', $_SESSION['FOTOSTRANA_SESSIONKEY']); //'5069480573313f191f74d1e6768941c6a47895c74b60cf');
-//define('FOTOSTRANA_VIEWER_ID', $_SESSION['FOTOSTRANA_VIEWER_ID']); //'60713086');
+//define('FOTOSTRANA_SESSIONKEY', $_SESSION['FOTOSTRANA_SESSIONKEY']); // '5069480573313f191f74d1e6768941c6a47895c74b60cf');
+//define('FOTOSTRANA_VIEWER_ID', $_SESSION['FOTOSTRANA_VIEWER_ID']); // '60713086');
 
 $user = new fotostranaUser(FOTOSTRANA_VIEWER_ID); // равнозначно $user = $fotostrana->getUser(FOTOSTRANA_VIEWER_ID);
 $wall = new fotostranaWall(FOTOSTRANA_VIEWER_ID); // равнозначно вызову $wall = $fotostrana->getWall(FOTOSTRANA_VIEWER_ID); или $wall = $user->wall();
-$pet  = $user->pet();
+$pet  = new fotostranaPet(FOTOSTRANA_VIEWER_ID);
+
+// выдаём ачивку
+// var_dump($user->giveAchievment(245)));
+
+// запрашиваем купон
+// var_dump($user->getMarketDiscount());
+
+// запрашиваем оффер url
+// var_dump($user->getOfferUrl());
+
+// запрашиваем петов друзей
+// var_dump($user->getFriendsPets());
 
 ?>
 
@@ -208,10 +220,6 @@ $pet  = $user->pet();
 </html>
 
 <?php
-
-// выдаём ачивку
-// $user->giveAchievment(245))
-
 
 // постим картинку на стену
 
