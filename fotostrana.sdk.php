@@ -335,8 +335,7 @@ class fotostranaUser extends fotostranaObject
         $r->setParam('userId',$this->user_id);
         $apiresult = $r->get();
         if (isset($apiresult['response'])) {
-            $this->data['market_discount'] = $apiresult['response'];
-            return $this->data['market_discount'];
+            return $apiresult['response'];
         }
     }
 
@@ -347,14 +346,14 @@ class fotostranaUser extends fotostranaObject
         $r->setParam('userId',$this->user_id);
         $apiresult = $r->get();
         if (isset($apiresult['response'])) {
-            $this->data['offer_url'] = $apiresult['response'];
-            return $this->data['offer_url'];
+            return $apiresult['response'];
         }
     }
 
     function getFriendsPets()
     {
         if (!$this->data['friends_pets']) {
+            $this->loadData();
             $this->data['friends_pets'] = array();
             $r = $this->request();
             $r->setMethod('Pet.getFriendsPets');
@@ -363,7 +362,8 @@ class fotostranaUser extends fotostranaObject
             $apiresult = $r->get();
             if (isset($apiresult['response']) && is_array($apiresult['response'])) {
                 foreach ($apiresult['response'] as $_pet) {
-                    $pet = new fotostranaPet($_pet['user_id']);
+                    $pet = new fotostranaPet(intval($_pet['pet_id']));
+                    $pet->setUser($this);
                     $this->data['friends_pets'][] = $pet;
                 }
             }
@@ -382,7 +382,7 @@ class fotostranaUser extends fotostranaObject
     function pet()
     {
         if (!$this->getFromOCache('pet')) {
-            $this->putToOCache('pet', new fotostranaPet($this->user_id));
+            $this->putToOCache('pet', new fotostranaPet($this));
         }
         return $this->getFromOCache('pet');
     }
@@ -456,7 +456,7 @@ class fotostranaPet extends fotostranaObject
 {
 
     private $user;
-    private $user_id;
+    private $pet_id;
     private $types = array(
         16 => 'собака',
         18 => 'кот',
@@ -466,27 +466,68 @@ class fotostranaPet extends fotostranaObject
         26 => 'панда'
     );
 
-    function __construct($user_id)
+    /**
+     * Конструктор принимает на входе объект-пользователь либо идентификатор питомца
+     * @param $p
+     */
+    function __construct($p)
     {
-        $this->user_id = $user_id;
+        if (is_integer($p)) {
+            $this->setPetId($p);
+            //echo("integer<br/>");
+        }
+        if ($p instanceof fotostranaUser) {
+            $this->setUser($p);
+            //echo("object<br/>");
+        }
     }
 
     function loadData()
     {
         $r = $this->request();
-        $r->setMethod('Pet.getPetsByUserIds');
-        $r->setParam('userIds',$this->user_id);
-        $r->setParam('fields','name,birthday,class,image200,image,user_name,user_photo_small,user_photo_97,user_photo_192,user_photo_big,pet_money');
-        $apiresult = $r->get();
-        if ($apiresult && is_array($apiresult) && count($apiresult)>0) {
-            $p = current($apiresult);
-            $this->data = current($p);
+        if ($this->user instanceof fotostranaUser) {
+            //echo("loading pet by user object<br/>");
+            $r->setMethod('Pet.getPetsByUserIds');
+            $r->setParam('userIds',$this->user->id);
+            $r->setParam('fields','name,birthday,class,image200,image,user_name,user_photo_small,user_photo_97,user_photo_192,user_photo_big,pet_money');
+            $apiresult = $r->get();
+            if ($apiresult && is_array($apiresult) && count($apiresult)>0) {
+                $p = current($apiresult);
+                $this->data = current($p);
+            }
+        }
+        if ($this->pet_id) {
+            //echo("loading pet by pet_id<br/>");
+            $r->setMethod('Pet.getPets');
+            $r->setParam('petIds',$this->pet_id);
+            $r->setParam('fields','name,birthday,class,image200,image,user_name,user_photo_small,user_photo_97,user_photo_192,user_photo_big,pet_money');
+            $apiresult = $r->get();
+            if ($apiresult && is_array($apiresult) && count($apiresult)>0) {
+                $p = current($apiresult);
+                $this->data = current($p);
+                $this->user = new fotostranaUser($this->data['user_id']);
+            }
         }
     }
 
     function getTypeName()
     {
         return iconv('windows-1251','utf-8',$this->types[$this->class]);
+    }
+
+    function setPetId($pet_id)
+    {
+        $this->pet_id = intval($pet_id);
+    }
+
+    function setUser(fotostranaUser $user)
+    {
+        $this->user = $user;
+    }
+
+    function user()
+    {
+        return $this->user;
     }
 
 }

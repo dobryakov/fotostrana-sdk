@@ -43,7 +43,7 @@ if (!FOTOSTRANA_SESSIONKEY || !FOTOSTRANA_VIEWER_ID)
 
 $user = new fotostranaUser(FOTOSTRANA_VIEWER_ID); // равнозначно $user = $fotostrana->getUser(FOTOSTRANA_VIEWER_ID);
 $wall = new fotostranaWall(FOTOSTRANA_VIEWER_ID); // равнозначно вызову $wall = $fotostrana->getWall(FOTOSTRANA_VIEWER_ID); или $wall = $user->wall();
-$pet  = new fotostranaPet(FOTOSTRANA_VIEWER_ID);
+$pet  = $user->pet();
 
 // выдаём ачивку
 // var_dump($user->giveAchievment(245)));
@@ -55,7 +55,10 @@ $pet  = new fotostranaPet(FOTOSTRANA_VIEWER_ID);
 // var_dump($user->getOfferUrl());
 
 // запрашиваем петов друзей
-// var_dump($user->getFriendsPets());
+/*$friends_pets = $user->getFriendsPets();
+foreach ($friends_pets as $_pet) {
+    var_dump($_pet->user()->user_name);
+}*/
 
 ?>
 
