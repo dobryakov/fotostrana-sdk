@@ -36,14 +36,14 @@ class fotostrana
         $this->flushCache();
     }
 
-    function getOAuthLink($client_id=false, $scope=false, $callback=false)
+    /*function getOAuthLink($client_id=false, $scope=false, $callback=false)
     {
 
         if (!$client_id) { $client_id = FOTOSTRANA_APPID; }
         if (!$scope)     { $scope     = FOTOSTRANA_REQUIRED_PERMISSIONS; }
         if (!$callback)  { $callback  = FOTOSTRANA_OAUTH_CALLBACK; }
         return FOTOSTRANA_URL . '/api/oauth/authorize/?client_id=' . $client_id . '&scope=' . $scope . '&redirect_uri=' . $callback;
-    }
+    }*/
 
     function getUser($user_id)
     {

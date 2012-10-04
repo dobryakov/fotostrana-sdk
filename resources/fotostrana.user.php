@@ -44,6 +44,9 @@ class fotostranaUser extends fotostranaObject
             case 'ofriends':
                 return $this->getFriendsAsObjects();
                 break;
+            case 'ofriendspets':
+                return $this->getFriendsPets();
+                break;
             case 'isAppWidgetUser':
                 return $this->getIsAppWidgetUser();
                 break;
@@ -58,6 +61,12 @@ class fotostranaUser extends fotostranaObject
                 break;
             case 'bitmask':
                 return $this->settings['0'];
+                break;
+            case 'marketDiscount':
+                return $this->getMarketDiscount();
+                break;
+            case 'offerUrl':
+                return $this->getOfferUrl();
                 break;
             default:
                 return parent::__get($key);
