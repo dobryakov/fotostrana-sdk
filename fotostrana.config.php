@@ -13,4 +13,6 @@ define('FOTOSTRANA_DEBUG', 0);
 define('FOTOSTRANA_SESSIONKEY', $_REQUEST['sessionKey']);
 define('FOTOSTRANA_VIEWER_ID', $_REQUEST['viewerId']);
 
+define('FOTOSTRANA_EXCHANGE', 1);
+
 ?>

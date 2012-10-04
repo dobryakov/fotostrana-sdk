@@ -100,18 +100,28 @@ foreach ($friends_pets as $_pet) {
         function spendMoney(amount)
         {
             if (api) {
-                api.event("spendMoney", callSpendMoney, {amount: amount});
+                api.event("spendMoney", withDrawMoney, {amount: amount});
             }
-        }
+        };
 
-        function callSpendMoney(amount)
+        function buyItem(name, amount, pic_url, exchange)
+        {
+            if (!exchange) {
+                exchange = "<?=FOTOSTRANA_EXCHANGE?>";
+            }
+            if (api) {
+                api.event("buyItem", withDrawMoney, { name: name, amount: amount, pic_url: pic_url, exchange: exchange });
+            }
+        };
+
+        function withDrawMoney(amount)
         {
             if (amount && amount.money) {
                 $.ajax({
                     url: 'withdrawmoney.php?amount=' + amount.money + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
                 });
             }
-        }
+        };
 
         var api = null;
 
@@ -214,7 +224,7 @@ foreach ($friends_pets as $_pet) {
                     Последние сообщения со стены:
                 </p>
                 <?
-                foreach($wall->get() as $item) {
+                foreach($wall->get(2) as $item) {
                     ?>
                     <p>
                         <br/>
@@ -234,6 +244,7 @@ foreach ($friends_pets as $_pet) {
                 </p>
                 <p>
                     <input type="button" name="" value=" Дай денег! " onclick='spendMoney(1)'>
+                    <input type="button" name="" value=" Купи слона! " onclick='buyItem("Elephant", 1)'>
                 </p>
             </div>
 
