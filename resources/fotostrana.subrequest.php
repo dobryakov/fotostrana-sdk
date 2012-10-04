@@ -61,7 +61,7 @@ class fotostranaSubRequest
         if (!array_key_exists('rand',$params))      { $params['rand']=rand(1,999999); }
 
         if (!in_array($params['method'],$this->server_methods)) {
-            $params['sessionKey'] = FOTOSTRANA_SESSIONKEY;
+            $params['sessionKey'] = FOTOSTRANA_SESSION_KEY;
             $params['viewerId'] = FOTOSTRANA_VIEWER_ID;
         }
 
@@ -81,7 +81,7 @@ class fotostranaSubRequest
         }
 
         if (!in_array($params['method'],$this->server_methods)) {
-            $url.='&sessionKey='.FOTOSTRANA_SESSIONKEY.'&viewerId='.FOTOSTRANA_VIEWER_ID;
+            $url.='&sessionKey='.FOTOSTRANA_SESSION_KEY.'&viewerId='.FOTOSTRANA_VIEWER_ID;
         }
 
         if (FOTOSTRANA_DEBUG) { echo "URL: ".htmlspecialchars($url)."<br/><br/>\n"; }

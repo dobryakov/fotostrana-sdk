@@ -9,7 +9,7 @@
     var APP_ID = "<?=FOTOSTRANA_APPID?>";
     var APP_CLIENT_KEY = "<?=FOTOSTRANA_CLIENTKEY?>";
     var VIEWER_ID = "<?=FOTOSTRANA_VIEWER_ID?>";
-    var SESSION_KEY = "<?=FOTOSTRANA_SESSIONKEY?>";
+    var SESSION_KEY = "<?=FOTOSTRANA_SESSION_KEY?>";
 
     var errorCallBack = function() { console.log("API Error!"); };
     var fsapi_url = getURLParameter('fsapi');

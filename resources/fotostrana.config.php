@@ -11,7 +11,7 @@ define('FOTOSTRANA_REQUIRED_PERMISSIONS', 'basic,friends');
 define('FOTOSTRANA_DEBUG', 0);
 define('FOTOSTRANA_REQUESTS_CACHE_TIMEOUT', 5);
 
-define('FOTOSTRANA_SESSIONKEY', $_REQUEST['sessionKey']);
+define('FOTOSTRANA_SESSION_KEY', $_REQUEST['sessionKey']);
 define('FOTOSTRANA_VIEWER_ID', $_REQUEST['viewerId']);
 
 define('FOTOSTRANA_EXCHANGE', 1);

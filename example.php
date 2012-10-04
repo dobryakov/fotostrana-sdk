@@ -7,7 +7,7 @@ $fotostrana = new fotostrana();
 
 session_start();
 
-if (!FOTOSTRANA_SESSIONKEY || !FOTOSTRANA_VIEWER_ID)
+if (!FOTOSTRANA_SESSION_KEY || !FOTOSTRANA_VIEWER_ID)
 {
     ?>
         <div style="width: 800px; margin: 15% auto;text-align: center;">
