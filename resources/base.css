@@ -1,0 +1,21 @@
+body
+ {
+ background-color: #fffacd;
+ }
+
+#content
+ {
+ border:0px blue solid;
+ border-radius: 10px;
+ width: 800px;
+ margin: 20px auto;
+ }
+
+.content_inline
+ {
+ display: inline-block;
+ border:1px #999999 solid;
+ border-radius: 4px;
+ padding: 6px;
+ vertical-align: top;
+ }
