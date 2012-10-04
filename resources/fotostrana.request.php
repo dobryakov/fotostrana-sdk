@@ -81,15 +81,19 @@ class fotostranaRequest
 
     private function formatResult()
     {
-        if ($this->result_raw) {
+        try {
+            if ($this->result_raw) {
 
-            $this->result_formatted = json_decode($this->result_raw, true);
+                $this->result_formatted = json_decode($this->result_raw, true);
 
-            if (array_key_exists('error',$this->result_formatted)) {
-                $this->error = $this->result_formatted['error'];
-                throw new fotostranaError('Error: '.$this->error['error_subcode'] . ': ' . $this->error['error_msg']);
+                if (array_key_exists('error',$this->result_formatted)) {
+                    $this->error = $this->result_formatted['error'];
+                    throw new fotostranaError('Error: '.$this->error['error_subcode'] . ': ' . $this->error['error_msg']);
+                }
+
             }
-
+        } catch (fotostranaError $e) {
+            echo $e->getMessage();
         }
     }
 
