@@ -41,7 +41,7 @@
     function withDrawMoney(amount) {
         if (amount && amount.money) {
             $.ajax({
-                url:'withdrawmoney.php?amount=' + amount.money + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
+                url:'resources/withdrawmoney.php?amount=' + amount.money + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
             });
         }
     };

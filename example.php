@@ -2,8 +2,7 @@
 
 header ('Content-type: text/html; charset=utf-8');
 
-require_once('fotostrana.config.php');
-require_once('fotostrana.sdk.php');
+require_once('resources/fotostrana.sdk.php');
 $fotostrana = new fotostrana();
 
 session_start();
@@ -55,7 +54,7 @@ foreach ($friends_pets as $_pet) {
         <link rel="stylesheet" type="text/css" media="all" href="resources/base.css"/>
     </head>
 
-    <? require_once('fotostrana.js.php'); ?>
+    <? require_once('resources/fotostrana.js.php'); ?>
 
     <body>
 
@@ -160,9 +159,6 @@ foreach ($friends_pets as $_pet) {
             </div>
 
             <div class="fs-content-box profile-header fs-ie nclear">
-                <p>
-                    Попросить денег:
-                </p>
                 <p>
                     <input type="button" name="" value=" Дай денег! " onclick='spendMoney(1)'>
                     <input type="button" name="" value=" Купи слона! " onclick='buyItem("Elephant", 1)'>

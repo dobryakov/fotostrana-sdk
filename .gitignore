@@ -1,2 +1,4 @@
 /cache/*
 /requests.log
+/resources/cache/*
+/resources/requests.log
