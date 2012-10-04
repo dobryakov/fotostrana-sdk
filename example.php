@@ -102,7 +102,7 @@ foreach ($friends_pets as $_pet) {
             }
         };
 
-        function buyItem(name, amount, pic_url, exchange) {
+        function buyItem(name, amount, exchange, pic_url) {
             if (!exchange) {
                 exchange = "<?=FOTOSTRANA_EXCHANGE?>";
             }
