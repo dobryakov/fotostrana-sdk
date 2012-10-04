@@ -26,9 +26,6 @@ if (!FOTOSTRANA_SESSIONKEY || !FOTOSTRANA_VIEWER_ID)
     die();
 }
 
-//define('FOTOSTRANA_SESSIONKEY', $_SESSION['FOTOSTRANA_SESSIONKEY']); // '5069480573313f191f74d1e6768941c6a47895c74b60cf');
-//define('FOTOSTRANA_VIEWER_ID', $_SESSION['FOTOSTRANA_VIEWER_ID']); // '60713086');
-
 $user = new fotostranaUser(FOTOSTRANA_VIEWER_ID); // равнозначно $user = $fotostrana->getUser(FOTOSTRANA_VIEWER_ID);
 $wall = new fotostranaWall(FOTOSTRANA_VIEWER_ID); // равнозначно вызову $wall = $fotostrana->getWall(FOTOSTRANA_VIEWER_ID); или $wall = $user->wall();
 $pet  = $user->pet();
@@ -54,7 +51,7 @@ foreach ($friends_pets as $_pet) {
     <head>
         <title>Fotostrana SDK Example</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <link rel="stylesheet" type="text/css" media="all" href="http://a5.s.fsimg.ru/base/css/__v16062011_1343818039.common.css"/>
+        <link rel="stylesheet" type="text/css" media="all" href="resources/common.css"/>
         <style type="text/css">
             body
             {
@@ -80,8 +77,6 @@ foreach ($friends_pets as $_pet) {
 
     <script type="text/javascript">
 
-        window.projectDomain = 'apitest.vs58.net';
-
         function getURLParameter(name) { return decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]); };
 
         var APP_ID = "<?=FOTOSTRANA_APPID?>";
@@ -91,6 +86,10 @@ foreach ($friends_pets as $_pet) {
 
         var errorCallBack = function() { console.log("API Error!"); };
         var fsapi_url = getURLParameter('fsapi');
+
+        // необходимо для локального тестирования
+        window.projectDomain = String(getURLParameter('apiUrl')).split( '%2F' )[2];
+
         var dumpData = function (ds) { console.log(ds.response); }
 
         $.ajaxSetup({

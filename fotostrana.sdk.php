@@ -842,7 +842,6 @@ class fotostranaRequestsCounter
 class fotostranaRequestsCache
 {
 
-    const LIFETIME = 30;
     private $cache_dir;
 
     function __construct()
@@ -866,7 +865,7 @@ class fotostranaRequestsCache
         if ($params) {
             $f = $this->cache_dir . $this->makeCacheKey($params);
             if (file_exists($f)) {
-                if (filemtime($f) < (time() - $this::LIFETIME)) {
+                if (filemtime($f) < (time() - FOTOSTRANA_REQUESTS_CACHE_TIMEOUT)) {
                     @unlink($f);
                 } else {
                     return $this->decryptData(file_get_contents($f));
