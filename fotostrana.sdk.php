@@ -694,6 +694,7 @@ class fotostranaSubRequest
         'User.sendNotification',
         'Userphoto.checkAccess',
         'Billing.getUserBalanceAny',
+        'Billing.withDrawMoneySafe',
         'User.sendAppEmail',
         'User.giveAchievment',
         'User.getAuthInfo'
@@ -851,7 +852,7 @@ class fotostranaRequestsCache
             $f = $this->cache_dir . $this->makeCacheKey($params);
             if (file_exists($f)) {
                 if (filemtime($f) < (time() - $this::LIFETIME)) {
-                    unlink($f);
+                    @unlink($f);
                 } else {
                     return $this->decryptData(file_get_contents($f));
                 }

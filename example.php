@@ -2,23 +2,11 @@
 
 header ('Content-type: text/html; charset=utf-8');
 
-define('FOTOSTRANA_APPID', 'sdkdemo');
-define('FOTOSTRANA_CLIENTKEY', 'a84aedc74dda60a3cf35a96683ae0947');
-define('FOTOSTRANA_SERVERKEY', 'c95e03377ca085d6f82c9b39fbf9336e');
-
-define('FOTOSTRANA_URL', 'http://fs98.vs58.net');
-define('FOTOSTRANA_API_BASEURL', 'http://fs98.vs58.net/apifs.php');
-define('FOTOSTRANA_OAUTH_CALLBACK', 'http://'.$_SERVER['HTTP_HOST'].'/sdk/callback-example.php');
-define('FOTOSTRANA_REQUIRED_PERMISSIONS', 'basic,friends');
-define('FOTOSTRANA_DEBUG', 0);
-
+require_once('fotostrana.config.php');
 require_once('fotostrana.sdk.php');
 $fotostrana = new fotostrana();
 
 session_start();
-
-define('FOTOSTRANA_SESSIONKEY', $_REQUEST['sessionKey']);
-define('FOTOSTRANA_VIEWER_ID', $_REQUEST['viewerId']);
 
 if (!FOTOSTRANA_SESSIONKEY || !FOTOSTRANA_VIEWER_ID)
 {
@@ -108,6 +96,7 @@ foreach ($friends_pets as $_pet) {
         var APP_CLIENT_KEY = "<?=FOTOSTRANA_CLIENTKEY?>";
         var errorCallBack = function() { console.log("API Error!"); };
         var fsapi_url = getURLParameter('fsapi');
+        var dumpData = function (ds) { console.log(ds.response); }
 
         /*if (LoadScript(fsapi_url)) {
             var client = new fsapi(APP_ID, APP_CLIENT_KEY);
@@ -131,12 +120,24 @@ foreach ($friends_pets as $_pet) {
             });
         };*/
 
-        function callSpendMoney(d)
+        function spendMoney(amount)
         {
             //console.log('-------------------------------------------------');
-            //console.log(d);
+            /*console.log(d);
             $.ajax({
-                url: 'withdrawmoney.php?amount=' + d.money
+                async: false,
+                url: 'withdrawmoney.php?amount=' + d.money + '&viewerId=<?=FOTOSTRANA_VIEWER_ID?>&sessionKey=<?=FOTOSTRANA_SESSIONKEY?>&rand=' + Math.random()
+            });*/
+            //console.log('api=' + window.api);
+            //api.api("User.getRegistrationDate", {}, dumpData);
+            api.event("spendMoney", callSpendMoney, {amount: amount});
+        }
+
+        function callSpendMoney(amount)
+        {
+            $.ajax({
+                /*async: false,*/
+                url: 'withdrawmoney.php?amount=' + amount.money + '&viewerId=<?=FOTOSTRANA_VIEWER_ID?>&sessionKey=<?=FOTOSTRANA_SESSIONKEY?>&rand=' + Math.random()
             });
         }
 
@@ -144,13 +145,17 @@ foreach ($friends_pets as $_pet) {
             cache: true
         });
 
-        function callApiEvent(name, callback, params) {
+        var api = null;
+
+        var loadApi = function() {
             $.getScript(fsapi_url, function(){
-                var client = new fsapi(APP_ID, APP_CLIENT_KEY);
-                client.init(errorCallBack);
-                client.event(name, callback, params);
+                api = new fsapi('<?=FOTOSTRANA_APPID?>', '<?=FOTOSTRANA_CLIENTKEY?>');
+                api.init(errorCallBack);
+                console.log('api=' + api);
             });
         }
+
+        loadApi();
 
     </script>
 
@@ -261,7 +266,7 @@ foreach ($friends_pets as $_pet) {
                     Попросить денег:
                 </p>
                 <p>
-                    <input type="button" name="" value=" Дай денег! " onclick='callApiEvent("buyItem", callSpendMoney, {name: "test", amount: 1});'>
+                    <input type="button" name="" value=" Дай денег! " onclick='spendMoney(1)'>
                 </p>
             </div>
 
@@ -303,6 +308,9 @@ foreach ($friends_pets as $_pet) {
             </p>
 
         </div>
+
+        <script type="text/javascript">
+        </script>
 
     </body>
 </html>
