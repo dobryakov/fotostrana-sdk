@@ -44,6 +44,9 @@ class fotostranaUser extends fotostranaObject
             case 'ofriends':
                 return $this->getFriendsAsObjects();
                 break;
+            case 'communities':
+                return $this->getCommunities();
+                break;
             case 'ofriendspets':
                 return $this->getFriendsPets();
                 break;
@@ -133,6 +136,24 @@ class fotostranaUser extends fotostranaObject
             $this->data['settings'] = $apiresult['response'];
         }
         return $this->data['settings'];
+    }
+
+    function getCommunities()
+    {
+        if (!array_key_exists('communities', $this->data)) {
+            /** @var $r fotostranaRequest */
+            $r = $this->request();
+            $r->setMethod('Community.getCommunities');
+            $r->setParam('userId', $this->id);
+            $r->setParam('fields', 'name,description,count,foto_48,foto_97,foto_192,is_creator,is_admin');
+            $apiresult = $r->get();
+            if (isset($apiresult['response']) && is_array($apiresult['response'])) {
+                foreach ($apiresult['response'] as $community) {
+                    $this->data['communities'][] = new fotostranaCommunity($community['community_id']);
+                }
+            }
+        }
+        return $this->data['communities'];
     }
 
     function sendNotification($text, $params)

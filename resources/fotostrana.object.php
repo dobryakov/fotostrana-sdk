@@ -28,7 +28,7 @@ class fotostranaObject extends fotostranaBase
 
     function __get($key)
     {
-        if (!$this->data) {
+        if (!isset($this->data[$key]) || !$this->data[$key]) {
             $this->loadData();
         }
         if (!is_array($this->data)) {

@@ -29,10 +29,17 @@ $user = new fotostranaUser(FOTOSTRANA_VIEWER_ID); // равнозначно $use
 $wall = new fotostranaWall(FOTOSTRANA_VIEWER_ID); // равнозначно вызову $wall = $fotostrana->getWall(FOTOSTRANA_VIEWER_ID); или $wall = $user->wall();
 $pet  = $user->pet();
 
-$community = new fotostranaCommunity(5795);
+// получим сообщества пользователя
+$communities = $user->communities;
+foreach ($communities as $community) {
+    // можем что-нибудь сделать здесь, или см. далее:
+}
+
+// получим коммьюнити, его форум, субфорумы, посты, и выведем в цикле имя автора этих постов
 foreach ($community->forum()->subforums() as $subforum) {
     foreach ($subforum->posts() as $post) {
-        var_dump($post->title);
+        //var_dump($community->name);
+        //var_dump($post->author()->user_name);
     }
 }
 
