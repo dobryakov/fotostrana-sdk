@@ -29,19 +29,19 @@
         }
     };
 
-    function buyItem(name, amount, exchange, pic_url) {
+    function buyItem(name, amount, exchange, item_id, pic_url) {
         if (!exchange) {
             exchange = "<?=FOTOSTRANA_EXCHANGE?>";
         }
         if (api) {
-            api.event("buyItem", withDrawMoney, { name:name, amount:amount, pic_url:pic_url, exchange:exchange });
+            api.event("buyItem", withDrawMoney, { name:name, amount:amount, exchange:exchange, id:item_id, pic_url:pic_url });
         }
     };
 
-    function withDrawMoney(amount) {
-        if (amount && amount.money) {
+    function withDrawMoney(params) {
+        if (params && params.money) {
             $.ajax({
-                url:'resources/withdrawmoney.php?amount=' + amount.money + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
+                url:'resources/withdrawmoney.php?amount=' + params.money + '&item=' + params.item + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
             });
         }
     };

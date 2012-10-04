@@ -161,7 +161,7 @@ foreach ($friends_pets as $_pet) {
             <div class="fs-content-box profile-header fs-ie nclear">
                 <p>
                     <input type="button" name="" value=" Дай денег! " onclick='spendMoney(1)'>
-                    <input type="button" name="" value=" Купи слона! " onclick='buyItem("Elephant", 1)'>
+                    <input type="button" name="" value=" Купи слона! " onclick='buyItem("Elephant", 1, 1, 666)'>
                     <input type="button" name="" value=" Разреши биллинг! " onclick='appSettings(<?=FOTOSTRANA_MASK_SILENT_BILLING?>)'>
                 </p>
             </div>
