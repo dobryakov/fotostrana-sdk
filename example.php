@@ -84,74 +84,41 @@ foreach ($friends_pets as $_pet) {
 
         function getURLParameter(name) { return decodeURI((RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]); };
 
-        /*function LoadScript(src){
-            var el=document.createElement('script');
-            el.setAttribute('src',src);
-            el.setAttribute('type','text/javascript');
-            document.getElementsByTagName('head')[0].appendChild(el);
-            return el;
-        };*/
-
         var APP_ID = "<?=FOTOSTRANA_APPID?>";
         var APP_CLIENT_KEY = "<?=FOTOSTRANA_CLIENTKEY?>";
+        var VIEWER_ID = "<?=FOTOSTRANA_VIEWER_ID?>";
+        var SESSION_KEY = "<?=FOTOSTRANA_SESSIONKEY?>";
+
         var errorCallBack = function() { console.log("API Error!"); };
         var fsapi_url = getURLParameter('fsapi');
         var dumpData = function (ds) { console.log(ds.response); }
-
-        /*if (LoadScript(fsapi_url)) {
-            var client = new fsapi(APP_ID, APP_CLIENT_KEY);
-            client.init(errorCallBack);
-        }*/
-
-        /*$.ajaxSetup({
-            cache: true
-        });
-
-        function callSpendMoney() { alert('x'); };
-
-        function callApiEvent(name, callback, params) {
-
-            $.getScript(fsapi_url, function(){
-
-                var client = new fsapi(APP_ID, APP_CLIENT_KEY);
-                client.init(errorCallBack);
-                client.event(name, alert('x'), params);
-
-            });
-        };*/
-
-        function spendMoney(amount)
-        {
-            //console.log('-------------------------------------------------');
-            /*console.log(d);
-            $.ajax({
-                async: false,
-                url: 'withdrawmoney.php?amount=' + d.money + '&viewerId=<?=FOTOSTRANA_VIEWER_ID?>&sessionKey=<?=FOTOSTRANA_SESSIONKEY?>&rand=' + Math.random()
-            });*/
-            //console.log('api=' + window.api);
-            //api.api("User.getRegistrationDate", {}, dumpData);
-            api.event("spendMoney", callSpendMoney, {amount: amount});
-        }
-
-        function callSpendMoney(amount)
-        {
-            $.ajax({
-                /*async: false,*/
-                url: 'withdrawmoney.php?amount=' + amount.money + '&viewerId=<?=FOTOSTRANA_VIEWER_ID?>&sessionKey=<?=FOTOSTRANA_SESSIONKEY?>&rand=' + Math.random()
-            });
-        }
 
         $.ajaxSetup({
             cache: true
         });
 
+        function spendMoney(amount)
+        {
+            if (api) {
+                api.event("spendMoney", callSpendMoney, {amount: amount});
+            }
+        }
+
+        function callSpendMoney(amount)
+        {
+            if (amount && amount.money) {
+                $.ajax({
+                    url: 'withdrawmoney.php?amount=' + amount.money + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
+                });
+            }
+        }
+
         var api = null;
 
         var loadApi = function() {
             $.getScript(fsapi_url, function(){
-                api = new fsapi('<?=FOTOSTRANA_APPID?>', '<?=FOTOSTRANA_CLIENTKEY?>');
+                api = new fsapi(APP_ID, APP_CLIENT_KEY);
                 api.init(errorCallBack);
-                console.log('api=' + api);
             });
         }
 
