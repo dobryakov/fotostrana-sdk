@@ -17,11 +17,6 @@ class fotostrana
             define('FOTOSTRANA_DEBUG', 0);
         }
 
-        if (!defined('FOTOSTRANA_REQUEST_LOG')) {
-            define('FOTOSTRANA_REQUEST_LOG', dirname(__FILE__).'/requests.log');
-            //file_put_contents(FOTOSTRANA_REQUEST_LOG, '');
-        }
-
         if (!defined('FOTOSTRANA_API_BASEURL')) {
             define('FOTOSTRANA_API_BASEURL','http://fotostrana.ru/apifs.php');
         }
@@ -559,12 +554,19 @@ class fotostranaRequest
     private $result_raw;
     private $result_formatted;
     private $cache;
+    private $cache_allowed = true;
     private $error;
 
     function __construct()
     {
+
+        if (!defined('FOTOSTRANA_REQUEST_LOG')) {
+            define('FOTOSTRANA_REQUEST_LOG', dirname(__FILE__).'/requests.log');
+        }
+
         $this->flushResult();
         $this->cache = new fotostranaRequestsCache();
+
     }
 
     function setMethod($method)
@@ -592,6 +594,16 @@ class fotostranaRequest
         } else {
             $this->mode='POST';
         }
+    }
+
+    function allowCache()
+    {
+        $this->cache_allowed = true;
+    }
+
+    function disallowCache()
+    {
+        $this->cache_allowed = false;
     }
 
     function get()
@@ -630,7 +642,7 @@ class fotostranaRequest
         $r = new fotostranaSubRequest();
         $p = array_merge($this->params, array('method'=>$this->method));
 
-        if ($cached_result = $this->cache->loadCache($p)) {
+        if ($this->cache_allowed && $cached_result = $this->cache->loadCache($p)) {
             $this->result_raw = $cached_result;
             if (FOTOSTRANA_REQUEST_LOG) {
                 file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' cache: '.$this->method.' '.serialize($this->params).' '.serialize($cached_result)."\n\n", FILE_APPEND);
@@ -666,7 +678,9 @@ class fotostranaRequest
             file_put_contents(FOTOSTRANA_REQUEST_LOG, date('r').' request: '.$this->method.' '.serialize($this->params).' '.$this->result_raw."\n\n", FILE_APPEND);
         }
 
-        $this->cache->storeCache($p, $this->result_raw);
+        if ($this->cache_allowed) {
+            $this->cache->storeCache($p, $this->result_raw);
+        }
 
         if (FOTOSTRANA_DEBUG) { var_dump($this->result_raw); }
     }
@@ -679,6 +693,7 @@ class fotostranaRequest
         $this->result_formatted = false;
         $this->error = false;
         $this->mode='GET';
+        $this->allowCache();
     }
 
 }

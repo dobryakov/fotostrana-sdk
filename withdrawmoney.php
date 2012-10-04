@@ -11,6 +11,7 @@ if (isset($_GET['amount']) && isset($_GET['viewerId']) && isset($_GET['sessionKe
     $request->setMethod('Billing.withDrawMoneySafe');
     $request->setParam('userId', FOTOSTRANA_VIEWER_ID);
     $request->setParam('money', $amount);
+    $request->disallowCache();
     $apiresult = $request->get();
 
     if (!isset($apiresult['response']['transferred']) || $apiresult['response']['transferred']<>$amount) {
