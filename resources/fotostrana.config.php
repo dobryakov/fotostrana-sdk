@@ -9,7 +9,7 @@ define('FOTOSTRANA_API_BASEURL', 'http://fs98.vs58.net/apifs.php');
 define('FOTOSTRANA_OAUTH_CALLBACK', 'http://'.$_SERVER['HTTP_HOST'].'/sdk/callback-example.php');
 define('FOTOSTRANA_REQUIRED_PERMISSIONS', 'basic,friends');
 define('FOTOSTRANA_DEBUG', 0);
-define('FOTOSTRANA_REQUESTS_CACHE_TIMEOUT', 5);
+define('FOTOSTRANA_REQUESTS_CACHE_TIMEOUT', 1);
 
 define('FOTOSTRANA_SESSION_KEY', $_REQUEST['sessionKey']);
 define('FOTOSTRANA_VIEWER_ID', $_REQUEST['viewerId']);

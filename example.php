@@ -29,6 +29,13 @@ $user = new fotostranaUser(FOTOSTRANA_VIEWER_ID); // равнозначно $use
 $wall = new fotostranaWall(FOTOSTRANA_VIEWER_ID); // равнозначно вызову $wall = $fotostrana->getWall(FOTOSTRANA_VIEWER_ID); или $wall = $user->wall();
 $pet  = $user->pet();
 
+$community = new fotostranaCommunity(5795);
+foreach ($community->forum()->subforums() as $subforum) {
+    foreach ($subforum->posts() as $post) {
+        var_dump($post->title);
+    }
+}
+
 // выдаём ачивку
 // var_dump($user->giveAchievment(245)));
 

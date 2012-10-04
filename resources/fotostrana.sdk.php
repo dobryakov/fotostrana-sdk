@@ -5,6 +5,7 @@ require_once('fotostrana.base.php');
 require_once('fotostrana.object.php');
 require_once('fotostrana.user.php');
 require_once('fotostrana.wall.php');
+require_once('fotostrana.community.php');
 require_once('fotostrana.pet.php');
 require_once('fotostrana.request.php');
 require_once('fotostrana.subrequest.php');
