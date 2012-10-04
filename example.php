@@ -30,18 +30,18 @@ $wall = new fotostranaWall(FOTOSTRANA_VIEWER_ID); // равнозначно вы
 $pet  = $user->pet();
 
 // получим сообщества пользователя
-$communities = $user->communities;
-foreach ($communities as $community) {
+//$communities = $user->communities;
+//foreach ($communities as $community) {
     // можем что-нибудь сделать здесь, или см. далее:
-}
+//}
 
 // получим коммьюнити, его форум, субфорумы, посты, и выведем в цикле имя автора этих постов
-foreach ($community->forum()->subforums() as $subforum) {
-    foreach ($subforum->posts() as $post) {
+//foreach ($community->forum()->subforums() as $subforum) {
+    //foreach ($subforum->posts() as $post) {
         //var_dump($community->name);
         //var_dump($post->author()->user_name);
-    }
-}
+    //}
+//}
 
 // выдаём ачивку
 // var_dump($user->giveAchievment(245)));
