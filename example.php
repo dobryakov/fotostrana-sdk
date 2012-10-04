@@ -97,15 +97,13 @@ foreach ($friends_pets as $_pet) {
             cache: true
         });
 
-        function spendMoney(amount)
-        {
+        function spendMoney(amount) {
             if (api) {
                 api.event("spendMoney", withDrawMoney, {amount: amount});
             }
         };
 
-        function buyItem(name, amount, pic_url, exchange)
-        {
+        function buyItem(name, amount, pic_url, exchange) {
             if (!exchange) {
                 exchange = "<?=FOTOSTRANA_EXCHANGE?>";
             }
@@ -114,12 +112,21 @@ foreach ($friends_pets as $_pet) {
             }
         };
 
-        function withDrawMoney(amount)
-        {
+        function withDrawMoney(amount) {
             if (amount && amount.money) {
                 $.ajax({
                     url: 'withdrawmoney.php?amount=' + amount.money + '&viewerId=' + VIEWER_ID + '&sessionKey=' + SESSION_KEY + '&rand=' + Math.random()
                 });
+            }
+        };
+
+        function appSettings(request_permission) {
+            if (api) {
+                if (request_permission) {
+                    api.event("appSettings", function(){}, {"request_permission": request_permission});
+                } else {
+                    api.event("appSettings");
+                }
             }
         };
 
@@ -245,6 +252,7 @@ foreach ($friends_pets as $_pet) {
                 <p>
                     <input type="button" name="" value=" Дай денег! " onclick='spendMoney(1)'>
                     <input type="button" name="" value=" Купи слона! " onclick='buyItem("Elephant", 1)'>
+                    <input type="button" name="" value=" Разреши биллинг! " onclick='appSettings(<?=FOTOSTRANA_MASK_SILENT_BILLING?>)'>
                 </p>
             </div>
 
