@@ -29,12 +29,12 @@
         }
     };
 
-    function buyItem(name, amount, exchange, item_id, pic_url) {
+    function buyItem(name, amount, exchange, item_id, currency_names, pic_url) {
         if (!exchange) {
             exchange = "<?=FOTOSTRANA_EXCHANGE?>";
         }
         if (api) {
-            api.event("buyItem", withDrawMoney, { name:name, amount:amount, exchange:exchange, id:item_id, pic_url:pic_url });
+            api.event("buyItem", withDrawMoney, { name:name, amount:amount, exchange:exchange, id:item_id, currency_names:currency_names, pic_url:pic_url });
         }
     };
 
